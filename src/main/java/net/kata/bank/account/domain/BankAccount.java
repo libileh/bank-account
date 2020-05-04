@@ -9,30 +9,30 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 
-public class Account {
+public class BankAccount {
 
     private Statement statement;
     private BigDecimal balance;
 
-    private Account(Statement statement, BigDecimal balance) {
+    private BankAccount(Statement statement, BigDecimal balance) {
         this.statement = statement;
         this.balance = balance;
     }
 
-    public static Account createAccount(BigDecimal initialBalance) {
+    public static BankAccount createAccount(BigDecimal initialBalance) {
         Statement statement = Statement.createEmptyStatement();
         if (initialBalance.compareTo(BigDecimal.ZERO) > 0) {
             statement.registerDeposit(initialBalance, LocalDate.now());
         }
-        return new Account(statement, initialBalance);
+        return new BankAccount(statement, initialBalance);
     }
 
-    public Account deposit(BigDecimal amountToDeposit) {
+    public BankAccount deposit(BigDecimal amountToDeposit) {
         statement.registerDeposit(amountToDeposit, LocalDate.now());
         return setBalance(currentBalance().add(amountToDeposit));
     }
 
-    public Account withdraw(BigDecimal amountToWithdraw) {
+    public BankAccount withdraw(BigDecimal amountToWithdraw) {
         validateWithdrawal(amountToWithdraw);
         statement.registerWithdraw(amountToWithdraw, LocalDate.now());
         return setBalance(currentBalance().subtract(amountToWithdraw));
@@ -42,7 +42,7 @@ public class Account {
         return balance;
     }
 
-    public Account setBalance(BigDecimal balance) {
+    public BankAccount setBalance(BigDecimal balance) {
         this.balance = balance;
         return this;
     }

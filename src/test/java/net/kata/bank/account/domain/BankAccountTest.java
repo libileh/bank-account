@@ -16,9 +16,9 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AccountTest {
+public class BankAccountTest {
 
-    private Account account;
+    private BankAccount bankAccount;
     @Mock
     private PrintStream printer;
 
@@ -27,41 +27,41 @@ public class AccountTest {
 
     @Before
     public void setUp() {
-        account = Account.createAccount(BigDecimal.valueOf(1000D));
+        bankAccount = BankAccount.createAccount(BigDecimal.valueOf(1000D));
 
     }
 
     @Test
     public void createAccount_withoutStatement() {
-        assertThat(account.currentBalance()).isEqualTo(BigDecimal.valueOf(1000D));
+        assertThat(bankAccount.currentBalance()).isEqualTo(BigDecimal.valueOf(1000D));
     }
 
     @Test
     public void deposit() {
-        assertThat(account.deposit(BigDecimal.valueOf(300D)).currentBalance()).isEqualTo(BigDecimal.valueOf(1300D));
+        assertThat(bankAccount.deposit(BigDecimal.valueOf(300D)).currentBalance()).isEqualTo(BigDecimal.valueOf(1300D));
     }
 
     @Test
     public void currentBalance() {
-        assertThat(account.currentBalance()).isEqualTo(BigDecimal.valueOf(1000D));
+        assertThat(bankAccount.currentBalance()).isEqualTo(BigDecimal.valueOf(1000D));
     }
 
     @Test
     public void withdraw() {
-        assertThat(account.withdraw(BigDecimal.valueOf(300D)).currentBalance()).isEqualTo(BigDecimal.valueOf(700D));
+        assertThat(bankAccount.withdraw(BigDecimal.valueOf(300D)).currentBalance()).isEqualTo(BigDecimal.valueOf(700D));
     }
 
     @Test
     public void withdrawal_amount_thenShouldFail() {
         thrown.expect(AmountBalanceException.class);
         thrown.expectMessage("Amount to withdraw must not be superior to the balance");
-        account.withdraw(BigDecimal.valueOf(3000D)).currentBalance();
+        bankAccount.withdraw(BigDecimal.valueOf(3000D)).currentBalance();
     }
 
     @Test
     public void printHistory() {
         Mockito.when(printer.toString()).thenReturn("|OPERATION TYPE |DATE|AMOUNT|DEPOSIT|2020-05-02|1000.0CURRENT BALANCE :   1000.0");
-        account.printHistory(printer);
+        bankAccount.printHistory(printer);
         assertThat(printer.toString())
                 .isEqualToIgnoringWhitespace("|OPERATION TYPE |DATE|AMOUNT|DEPOSIT|2020-05-02|1000.0CURRENT BALANCE :   1000.0");
     }
